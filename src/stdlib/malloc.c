@@ -10,6 +10,7 @@
 #include "stdio.h"
 #include "mvs/wto.h"
 #include "src/internal/wtofmt.h"
+#include "src/internal/heap.h"
 
 
 __PDPCLIB_API__ void *malloc(size_t size)
@@ -19,6 +20,12 @@ __PDPCLIB_API__ void *malloc(size_t size)
     /* C99 7.20.3 lets a request for 0 bytes return NULL.  That is not a
        shortage: no ENOMEM, no console message, no traceback (#394) */
     if (size == 0) return NULL;
+
+    /* a small block from the heap (heap.c), when it can give one */
+    if (size <= HEAP_MAXSIZE) {
+        ptr = __hpget(size);
+        if (ptr) return ptr;
+    }
 
 #define MAX_CHUNK	(6 * 1024 * 1024)	/* 6M */
     if (size > MAX_CHUNK) {

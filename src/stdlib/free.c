@@ -7,6 +7,7 @@
 #include "ctype.h"
 #include "stddef.h"
 #include "mvs/storage.h"
+#include "src/internal/heap.h"
 
 __PDPCLIB_API__ void free(void *ptr)
 {
@@ -15,8 +16,8 @@ __PDPCLIB_API__ void free(void *ptr)
     __caller(caller);
     wtof("free(%08X) called by %s", ptr, caller);
 #endif /* debug free problem */
-    if (ptr) {
-        __freem(ptr);
+    if (ptr && !__hpput(ptr)) {         /* a heap block (heap.c), or  */
+        __freem(ptr);                   /* GETMAIN'd                  */
     }
 
     return;

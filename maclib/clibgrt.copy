@@ -23,6 +23,7 @@ GRTCTHRD DS    A                     CTHDTASK array
 GRTWSA   DS    A                     writable static array
 GRTDEVTB DS    A                     device array
 GRTPTRS  DS    A                     pointer passed in via argv
+GRTHEAP  DS    A                     malloc()'s small-block heap
 *
          DS    0D                    align to double word
 CLIBGRT  EQU   @CLIBGRT,*-@CLIBGRT

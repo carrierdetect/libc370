@@ -5,6 +5,7 @@
 #include "stddef.h"
 #include "ibm/mvs/ihacde.h"
 #include "mvs/crt.h"
+#include "src/internal/heap.h"
 
 int
 __grtres(void)
@@ -17,6 +18,7 @@ __grtres(void)
         CLIBGRT *grt = crt->crtgrt;
         if (grt) {
             if (memcmp(grt->grteye, "CLIBGRT ", 8)==0) {
+                __hprel(grt);   /* the heap's chunks, before the GRT    */
                 memset(grt->grteye, 0, sizeof(grt->grteye));
                 free(grt);
                 rc = 0;

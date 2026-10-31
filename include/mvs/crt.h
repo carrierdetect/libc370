@@ -75,7 +75,9 @@ struct clibgrt {
                                     /* ... Any other list gets 10 words,    */
                                     /* ... valid only within the caller's   */
                                     /* ... own list (#218).                 */
-};                                  /* 50 (80 bytes)                        */
+    void        *grtheap;           /* 50 malloc()'s small-block heap       */
+                                    /* ... (stdlib/heap.c)                  */
+};                                  /* 54 (84 bytes)                        */
 
 extern CLIBGRT  *__grtget(void);
 extern int      __grtres(void);
